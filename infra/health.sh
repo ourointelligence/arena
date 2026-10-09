@@ -27,7 +27,7 @@ if [ -n "$health" ]; then
 import json,sys
 d=json.load(sys.stdin)
 for k,v in d.get("lanes",{}).items():
-    print("\t".join([k, str(v.get("state")), str(v.get("lastBarTs")), str(v.get("lastCycleTs"))]))')
+    print("\t".join([k, str(v.get("state")), json.dumps(v.get("lastBarTs")), json.dumps(v.get("lastCycleTs"))]))')
   disk=$(printf '%s' "$health" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("disk",{}).get("percent") or 0)')
   [ "${disk%.*}" -gt 80 ] 2>/dev/null && problems+=("disk at ${disk}%")
 fi
