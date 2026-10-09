@@ -110,6 +110,17 @@ export function buildLoopConfig(lane: LaneDefinition, env: RunnerEnv, deps: { so
   };
 }
 
+function lazyLLM(choice: string): LLM {
+  let inner: LLM | null = null;
+  return {
+    name: choice,
+    complete(req) {
+      inner ??= resolveLLM(choice);
+      return inner.complete(req);
+    },
+  };
+}
+
 function laneDir(env: RunnerEnv, lane: LaneId): string {
   return path.join(env.dataDir, 'lanes', lane, '.ouro');
 }
@@ -160,7 +171,9 @@ export async function runLane(opts: RunLaneOptions): Promise<LaneRuntime> {
     return row;
   };
 
-  const baseLLM = opts.llm ?? (env.fakeLlm ? scriptedFakeLLM() : resolveLLM(env.llm));
+  // the provider adapter is resolved on first use, so a lane without a key starts, heartbeats and reports the
+  // problem in its state instead of crashing before the control socket exists
+  const baseLLM: LLM = opts.llm ?? (env.fakeLlm ? scriptedFakeLLM() : lazyLLM(env.llm));
   let loopRef: Loop | null = null;
   const llm = budgetLLM(baseLLM, {
     lane: lane.id,
@@ -204,7 +217,8 @@ export async function runLane(opts: RunLaneOptions): Promise<LaneRuntime> {
   let lastBarTs: number | null = null;
   let lastCycleTs: number | null = null;
   let pendingCycle: number | null = null;
-  const state = (): LaneStatus => (paused ? 'paused' : pendingCycle !== null ? 'pending' : 'running');
+  let lastError: string | null = null;
+  const state = (): LaneStatus => (lastError ? 'error' : paused ? 'paused' : pendingCycle !== null ? 'pending' : 'running');
   const heartbeat = () => {
     if (stopping) return;
     try {
@@ -245,7 +259,17 @@ export async function runLane(opts: RunLaneOptions): Promise<LaneRuntime> {
       if (s.step === env.killAtStep) process.kill(process.pid, 'SIGKILL');
     });
   }
-  loop.on('error', (e) => log(`error ${e.scope}: ${e.message}`));
+  loop.on('error', (e) => {
+    log(`error ${e.scope}: ${e.message}`);
+    if (e.scope === 'seed' || e.scope === 'run') {
+      lastError = e.message;
+      heartbeat();
+    }
+  });
+  loop.on('seed', () => {
+    lastError = null;
+    heartbeat();
+  });
   loop.on('bar', (b) => {
     if (lastBarTs === null || b.bar.ts > lastBarTs) lastBarTs = b.bar.ts;
   });
@@ -284,7 +308,7 @@ export async function runLane(opts: RunLaneOptions): Promise<LaneRuntime> {
     switch (cmd) {
       case 'status': {
         const st = await loop.status();
-        return { lane: lane.id, state: state(), status: st, source: sourceHealth(source), spendTodayUsd: spendToday(db, lane.id).usd, budgetUsd, pid: process.pid, sdkVersion: sdk, model, pausedByBudget };
+        return { lane: lane.id, state: state(), status: st, source: sourceHealth(source), spendTodayUsd: spendToday(db, lane.id).usd, budgetUsd, pid: process.pid, sdkVersion: sdk, model, pausedByBudget, lastError };
       }
       case 'health':
         return { lane: lane.id, state: state(), lastBarTs, lastCycleTs, source: sourceHealth(source), pid: process.pid };
