@@ -1,0 +1,44 @@
+{
+  "name": "@arena/runner",
+  "version": "0.1.0",
+  "private": true,
+  "description": "One process per lane: builds the OURO loop from lanes/<name>.ts, subscribes to every SDK event, writes arena.db through the indexer and answers the admin control socket.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "arena-runner": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@arena/core": "workspace:*",
+    "@arena/flow": "workspace:*",
+    "@arena/hl": "workspace:*",
+    "@arena/lanes": "workspace:*",
+    "@ourointelligence/executor-paper": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-executor-paper-0.2.0.tgz",
+    "@ourointelligence/sdk": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-sdk-0.2.0.tgz",
+    "@ourointelligence/source-hyperliquid": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-source-hyperliquid-0.2.0.tgz",
+    "better-sqlite3": "^13.0.3",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.18.0",
+    "@types/ws": "^8.18.2",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  }
+}

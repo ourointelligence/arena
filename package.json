@@ -1,0 +1,43 @@
+{
+  "name": "arena",
+  "private": true,
+  "version": "0.1.0",
+  "description": "OURO Arena: a public, always-on page where OURO invents, tests, kills and promotes its own trading strategies on live Hyperliquid data, in paper mode.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "test:e2e": "pnpm --filter @arena/web run test:e2e",
+    "lint": "eslint . && node scripts/check-emdash.mjs",
+    "typecheck": "pnpm -r run typecheck",
+    "sdk:use": "node scripts/sdk-use.mjs",
+    "sdk:npm": "node scripts/sdk-npm.mjs",
+    "dev:api": "pnpm --filter @arena/api run dev",
+    "dev:web": "pnpm --filter @arena/web run dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.18.0",
+    "eslint": "^9.39.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^3.2.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "isolated-vm"
+    ],
+    "overrides": {
+      "@ourointelligence/sdk": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-sdk-0.2.0.tgz",
+      "@ourointelligence/source-hyperliquid": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-source-hyperliquid-0.2.0.tgz",
+      "@ourointelligence/executor-paper": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-executor-paper-0.2.0.tgz"
+    }
+  }
+}

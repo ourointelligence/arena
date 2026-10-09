@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.eslintcache
+coverage/
+.env
+.ouro/
+*.db
+*.db-wal
+*.db-shm
+apps/web/playwright-report/
+apps/web/test-results/
+apps/web/screenshots/
+/var/
+.DS_Store

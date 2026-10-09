@@ -1,0 +1,9 @@
+{
+  "version": "0.2.0",
+  "packages": [
+    "sdk",
+    "source-hyperliquid",
+    "executor-paper"
+  ],
+  "releaseBase": "https://github.com/ourointelligence/ouro/releases/download"
+}

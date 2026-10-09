@@ -1,0 +1,33 @@
+{
+  "name": "@arena/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The arena admin command: status, pause, resume, approval, approve, reject, rollback, budget, rebuild, export, drill, ledger.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "arena": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@arena/core": "workspace:*",
+    "@arena/lanes": "workspace:*",
+    "@arena/runner": "workspace:*",
+    "@ourointelligence/executor-paper": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-executor-paper-0.2.0.tgz",
+    "@ourointelligence/sdk": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-sdk-0.2.0.tgz",
+    "@ourointelligence/source-hyperliquid": "https://github.com/ourointelligence/ouro/releases/download/v0.2.0/ourointelligence-source-hyperliquid-0.2.0.tgz",
+    "better-sqlite3": "^13.0.3",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.18.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

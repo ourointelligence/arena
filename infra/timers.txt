@@ -1,0 +1,7 @@
+The timers and their one-shot services, installed by install.sh. Each line: unit name, schedule, what it runs.
+
+arena-ledger.timer          hourly at :05          arena ledger            (export, hash, chain, snapshots row, every lane)
+arena-ledger-daily.timer    daily at 00:10 UTC     infra/ledger-daily.sh   (commit and push the day's files to ourointelligence/arena-ledger)
+arena-health.timer          every 5 minutes        infra/health.sh         (checks, Telegram alert when configured)
+arena-backup.timer          daily at 03:30 UTC     infra/backup.sh         (tar.gz of /var/lib/arena with sqlite .backup, 14 days kept)
+arena-compact.timer         daily at 04:00 UTC     infra/compact.sh        (downsample equity older than 30 days to hourly)

@@ -1,0 +1,40 @@
+{
+  "name": "@arena/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Read-only Arena API: REST plus server-sent events over arena.db, on 127.0.0.1:8787 behind nginx.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "arena-api": "./dist/main.js"
+  },
+  "files": [
+    "dist",
+    "fonts"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "dev": "tsx src/main.ts",
+    "fixture": "tsx src/fixture-server.ts"
+  },
+  "dependencies": {
+    "@arena/core": "workspace:*",
+    "@hono/node-server": "^1.19.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "better-sqlite3": "^13.0.3",
+    "hono": "^4.10.0",
+    "satori": "^0.18.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^22.18.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}
