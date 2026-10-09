@@ -51,7 +51,7 @@ echo "at $(git -C "$APP" rev-parse --short HEAD)"
 echo "== build"
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 command -v pnpm >/dev/null 2>&1 || corepack enable
-( cd "$APP" && pnpm install --frozen-lockfile && pnpm -r --filter @arena/core --filter @arena/hl --filter @arena/flow --filter @arena/runner --filter @arena/api --filter @arena/cli --filter @arena/web run build )
+( cd "$APP" && pnpm install --frozen-lockfile && pnpm -r run build )
 
 echo "== static site"
 rm -rf "$WWW"/*
