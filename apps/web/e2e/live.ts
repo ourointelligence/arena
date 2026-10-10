@@ -14,6 +14,11 @@ for (const [w, h] of [
   [390, 844],
 ]) {
   const page = await browser.newPage({ viewport: { width: w, height: h } });
+  const errors: string[] = [];
+  page.on('console', (m) => {
+    if (m.type() === 'error') errors.push(m.text().slice(0, 200));
+  });
+  page.on('pageerror', (e) => errors.push(String(e).slice(0, 200)));
   const t0 = Date.now();
   const res = await page.goto(url, { waitUntil: 'load', timeout: 60_000 });
   const status = res?.status();
@@ -32,7 +37,8 @@ for (const [w, h] of [
   await page.screenshot({ path: file, fullPage: true });
   const line = `${w}x${h}: status ${status}, load ${ms} ms, h1 "${h1?.trim()}", overflow ${scrollW > innerW ? 'YES' : 'no'}, tree in viewport ${canvasVisible}, screenshot ${file}`;
   console.log(line);
-  if (status !== 200 || scrollW > innerW) ok = false;
+  for (const e of errors) console.log(`  console error: ${e}`);
+  if (status !== 200 || scrollW > innerW || errors.length > 0) ok = false;
   await page.close();
 }
 await browser.close();

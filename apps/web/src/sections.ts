@@ -264,7 +264,7 @@ export function paperBook(onRange: (r: EquityRange) => void) {
     'section',
     { class: 'chapter', id: 'book' },
     chapterTop('05 / Paper book', 'Against buy and hold.', undefined, seg),
-    el('p', { class: 'lede', style: 'margin-bottom:20px' }, 'The lane ensemble paper equity next to simply holding the first asset over the same period, both starting at 100. Fees, slippage and funding count.'),
+    el('p', { class: 'lede gap-b' }, 'The lane ensemble paper equity next to simply holding the first asset over the same period, both starting at 100. Fees, slippage and funding count.'),
     chart,
     el(
       'div',
@@ -394,7 +394,7 @@ export function killSwitch() {
       for (const l of lanes) {
         const h = health?.lanes[l.id];
         const st: LaneState = h?.state ?? l.status;
-        states.appendChild(el('div', { class: 'lane-state' }, el('span', { class: 'n' }, l.name), el('span', null, el('span', { class: `pill ${st}` }, st), el('div', { class: 'd' }, stateText[st] ?? st)), el('span', { class: 'd' }, h?.lastCycleTs ? `last cycle ${fmt.ago(h.lastCycleTs)} ago` : '')));
+        states.appendChild(el('div', { class: 'lane-state' }, el('span', { class: 'n' }, l.name), el('span', null, el('span', { class: `pill ${st}` }, st), el('div', { class: 'd' }, st === 'error' && !h?.lastBarTs && !h?.lastCycleTs ? 'not started yet: waiting for the model to write the first strategies' : (stateText[st] ?? st))), el('span', { class: 'd' }, h?.lastCycleTs ? `last cycle ${fmt.ago(h.lastCycleTs)} ago` : '')));
       }
     },
     updateLog(rows: ControlRow[]) {
@@ -460,9 +460,9 @@ export function howItWorks(): HTMLElement {
       el(
         'div',
         null,
-        el('p', { class: 'lede', style: 'margin-bottom:18px' }, 'The SDK behind this page is open source. The docs explain the loop, the guards and the Capability Index in detail.'),
+        el('p', { class: 'lede gap-b' }, 'The SDK behind this page is open source. The docs explain the loop, the guards and the Capability Index in detail.'),
         el('a', { class: 'btn', href: 'https://ourosi.xyz/#docs' }, 'Read the OURO docs'),
-        el('div', { class: 'note', style: 'margin-top:28px' }, el('b', null, 'Paper trading only.'), ' Nothing here is financial advice or a trading signal.'),
+        el('div', { class: 'note gap-t' }, el('b', null, 'Paper trading only.'), ' Nothing here is financial advice or a trading signal.'),
       ),
     ),
   );

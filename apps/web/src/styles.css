@@ -178,6 +178,8 @@ tr.best td{box-shadow:inset 3px 0 0 var(--flame)}
 .lines p::before{counter-increment:line;content:counter(line,decimal-leading-zero);font-family:var(--display);font-stretch:125%;font-weight:900;font-size:22px;color:var(--cobalt);line-height:1}
 .note{border-left:3px solid var(--flame);padding:12px 18px;background:var(--soft);font-size:15px}
 .note b{color:var(--flame)}
+.gap-b{margin-bottom:20px}
+.gap-t{margin-top:28px}
 
 footer{border-top:1px solid var(--rule);padding-block:32px;color:var(--fg3);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono)}
 footer a{color:inherit}
